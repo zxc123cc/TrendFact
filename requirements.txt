@@ -1,0 +1,10 @@
+fuzzywuzzy
+numpy
+pandas
+scikit-learn
+vllm==0.6.3.post1
+transformers
+nltk
+bert_score
+jieba
+torch
