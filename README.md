@@ -115,5 +115,14 @@ python evaluate/cal_ECS.py --input_file ../outputs/results.json --output_file ..
 python evaluate/cal_HCPI.py --input_file ../outputs/results_ECS.json
 ```
 
-
+## Citation
+```bibtex
+@article{zhang2025trendfact,
+  title={TrendFact: A Benchmark for Explainable Hotspot Perception in Fact-Checking with Natural Language Explanation},
+  author={Zhang, Xiaocheng and Wang, Xi and Lu, Yifei and Wang, Jianing and Ye, Zhuangzhuang and Bao, Mengjiao and Yan, Peng and Su, Xiaohong},
+  journal={arXiv preprint arXiv:2410.15135},
+  year={2025},
+  url={https://arxiv.org/abs/2410.15135}
+}
+```
 
