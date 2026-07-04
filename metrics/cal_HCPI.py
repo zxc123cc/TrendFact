@@ -121,17 +121,17 @@ def cal_HCPI(df):
         sum_score += row['final_influence']
         if row['label'] == 0:
             if row['pred_label'] == 0:
-                now_score += row['final_influence'] * (float(row['ECS']) * 0.2)
+                now_score += row['final_influence'] * float(row['ECS'])
             elif row['pred_label'] == 1:
                 now_score -= 2 * row['final_influence']
         elif row['label'] == 1:
             if row['pred_label'] == 1:
-                now_score += row['final_influence'] * (float(row['ECS']) * 0.2)
+                now_score += row['final_influence'] * float(row['ECS'])
         else:
             if row['pred_label'] == 1:
                 now_score -= row['final_influence']
             if row['pred_label'] == 2:
-                now_score += row['final_influence'] * (float(row['ECS']) * 0.2)
+                now_score += row['final_influence'] * float(row['ECS'])
 
     print(now_score / sum_score)
 
