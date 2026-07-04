@@ -53,66 +53,36 @@
 | FactISR(Qwen3-32B)   | 0.6157     | 0.8268     | 0.2443     | 0.8015     | 0.5604     | 0.3585     | 0.5097     |
 
 
-## Setup
+## Data
 
-1. Clone this repository:
+The dataset is hosted on Hugging Face: [zxc123cc/TrendFact](https://huggingface.co/datasets/zxc123cc/TrendFact).
+
+## Metrics
+
+We release the implementation of our two proposed metrics, ECS and HCPI, under `metrics/`.
+
+### ECS (Explanation Consistency Score)
+
+ECS uses an LLM as a judge to score how consistent a generated explanation is with the gold one. Set your API credentials via environment variables first:
+
 ```bash
-git clone https://github.com/zxc123cc/TrendFact.git
-cd TrendFact
+export OPENAI_API_KEY=your_key
+export OPENAI_API_BASE=https://api.openai.com/v1   # optional
+export OPENAI_MODEL=gpt-4o-2024-11-20              # optional
 ```
 
-2. Install required packages:
 ```bash
-pip install -r requirements.txt
+python metrics/cal_ECS.py --input_file results.json --output_file results_ECS.json
 ```
 
+The input file is a JSON list where each sample contains at least `claim`, `explanation` (gold) and the model output (`llm_response`, or `llm_response_parse` / `llm_think` + `llm_response`).
 
-## Run
+### HCPI (Hotspot Claim Perception Index)
+
+HCPI fuses the influence score with ECS to measure hotspot perception ability. It reads the ECS output above:
+
 ```bash
-cd src
-```
-
-```bash
-python FactISR.py \
-  --trend_data_path ../data/TrendFact.json \
-  --retrieval_evidence_path ../outputs/retrieval_evidence_bge_m3.json \
-  --output_file ../outputs/results.json \
-  --model_path /home/hadoop-dpsr/dolphinfs_hdd_hadoop-dpsr/linzhimin/comps/pretrained_model/qwen2.5/Qwen/QwQ-32B \
-  --tensor_parallel_size 2 \
-  --max_model_len 30000 \
-  --max_tokens 8000 \
-  --temperature 0.0 \
-  --max_trunc_len 3000 \
-  --max_evidence_limit 3 \
-  --max_turn 5
-```
-or
-```bash
-sh run.sh
-```
-
-
-## Evaluation
-
-### Acc&F1
-```bash
-python evaluate/cal_Acc_F1.py --input_file ../outputs/results.json
-```
-
-
-### Text Quality
-```bash
-python evaluate/cal_text_quality.py --input_file ../outputs/results.json
-```
-
-### ECS
-```bash
-python evaluate/cal_ECS.py --input_file ../outputs/results.json --output_file ../outputs/results_ECS.json
-```
-
-### HCPI
-```bash
-python evaluate/cal_HCPI.py --input_file ../outputs/results_ECS.json
+python metrics/cal_HCPI.py --input_file results_ECS.json
 ```
 
 ## Citation

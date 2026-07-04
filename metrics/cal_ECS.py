@@ -1,9 +1,14 @@
+import os
 import json
 import requests
 import pandas as pd
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
 import argparse
+
+OPENAI_API_BASE = os.environ.get("OPENAI_API_BASE", "https://api.openai.com/v1")
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
+MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o-2024-11-20")
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Process input and output file paths.")
@@ -22,19 +27,17 @@ def parse_arguments():
     return parser.parse_args()
 
 def gen_result(system, message, temperature):
-    url = "https://aigc.sankuai.com/v1/openai/native/chat/completions"
+    url = f"{OPENAI_API_BASE}/chat/completions"
     messages = [
         system,
         {"role": "user", "content": message},
     ]
-    api_key = "YOUR_API_KEY"
     headers = {
-        "Authorization": f"Bearer {api_key}",
+        "Authorization": f"Bearer {OPENAI_API_KEY}",
         "Content-Type": "application/json",
     }
-    model = 'gpt-4o-2024-11-20'
     data = {
-        "model": model,
+        "model": MODEL,
         "messages": messages,
         "temperature": temperature,
     }
